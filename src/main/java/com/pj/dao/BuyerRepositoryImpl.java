@@ -58,5 +58,7 @@ public class BuyerRepositoryImpl implements BuyerRepositoryCustom{
 		buyer.setStatus(AppConstants.BUYER_ACTIVE);
 		mongoTemplate.save(buyer);
 	}
+
+
 	
 }
