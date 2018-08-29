@@ -10,21 +10,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 public class Application {
 
+  	 @Bean
+	    public WebMvcConfigurer corsConfigurer() {
+	        return new WebMvcConfigurerAdapter() {
+	            @Override
+	            public void addCorsMappings(CorsRegistry registry) {
+	                registry
+	                .addMapping("/**")
+	                .allowedOrigins("http://localhost:4200")
+	                .allowedMethods("GET","POST","DELETE","PUT");
+	            }
+	        };
+	    }
 	
-	
-	@SuppressWarnings("deprecation")
-	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-       
-		return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/greeting").allowedOrigins("http://localhost:4200");
-            }
-        }; 
-    }
+
 	
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        
+
+        
+        
     }
 }

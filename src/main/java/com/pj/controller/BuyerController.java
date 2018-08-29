@@ -36,9 +36,9 @@ public class BuyerController {
 	}
 	
 	
-	@DeleteMapping
-	public boolean delete(@RequestBody Buyer buyer) {
-		 buyerRepo.deleteById(buyer.getId());
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public boolean delete(@PathVariable String id) {
+		 buyerRepo.deleteById(id);
 		 return true;
 	}
 	

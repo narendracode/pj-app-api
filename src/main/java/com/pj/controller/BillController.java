@@ -1,5 +1,6 @@
 package com.pj.controller;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pj.constants.AppConstants;
 import com.pj.dao.BillRepository;
 import com.pj.model.Bill;
+import com.pj.model.Item;
+import com.pj.model.Payment;
 
 
 
@@ -24,9 +27,23 @@ public class BillController {
 	@Autowired
 	BillRepository billRepo;
 	
-	
 	@PostMapping
 	public Bill create(@RequestBody Bill bill) {
+		if(bill.getItems() != null && bill.getItems().size()>0) {
+			Iterator<Item> it = bill.getItems().iterator();
+			double total = 0.0;
+			while(it.hasNext()) {
+				Item item = it.next();
+				total = total + (item.getUnitCost() * item.getQuantity());
+			}
+			
+			double tax = total * bill.getTax();
+			total = total + tax;
+			
+			total = total - bill.getDiscount();
+			bill.setTotal(total);
+		}
+		
 		bill.setStatus(AppConstants.BILL_PENDING_PAYMENT);
 		bill.setCreatedAt(new java.sql.Date(new java.util.Date().getTime()));
 		bill.setUpdatedAt(new java.sql.Date(new java.util.Date().getTime()));
@@ -61,10 +78,10 @@ public class BillController {
 		 return true;
 	}
 	
-	
-	@RequestMapping(value = "/paid/{id}", method = RequestMethod.POST)
-	public boolean deactivate(@PathVariable String id) {
-		return billRepo.paid(id);
+	@RequestMapping(value = "/pay", method = RequestMethod.PUT)
+	public boolean pay(@RequestBody Payment payment) {
+		System.out.println("bill pay is called.....");
+		return billRepo.pay(payment);
 	}
 	
 }

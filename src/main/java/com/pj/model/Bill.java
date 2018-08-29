@@ -11,12 +11,14 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 public class Bill {
 	@Id 
 	private String id;
-	
 	private String buyerId;
+	private String buyerName;
 	private List<Item> items;
 	private double discount;
 	private double tax;
 	private int status;
+	private double amountPaid;
+	private double total;
 	
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private Date createdAt;
@@ -24,6 +26,15 @@ public class Bill {
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private Date updatedAt;
 	
+
+	public String getBuyerName() {
+		return buyerName;
+	}
+
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
+	}
+
 	public int getStatus() {
 		return status;
 	}
@@ -86,6 +97,22 @@ public class Bill {
 
 	public void setBuyerId(String buyerId) {
 		this.buyerId = buyerId;
+	}
+	
+	public double getAmountPaid() {
+		return amountPaid;
+	}
+
+	public void setAmountPaid(double amountPaid) {
+		this.amountPaid = amountPaid;
+	}
+	
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 	
 }

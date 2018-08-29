@@ -1,6 +1,8 @@
 package com.pj.dao;
 
 import java.util.List;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.pj.constants.AppConstants;
 import com.pj.model.Bill;
+import com.pj.model.Payment;
 
 
 @Repository
@@ -30,17 +33,21 @@ public class BillRepositoryImpl implements BillRepositoryCustom{
 	}
 	
 	@Override
-	public boolean paid(String id) {
+	public boolean pay(Payment payment) {
 		final Query query = new Query();
-		query.addCriteria(Criteria.where("id").is(id));
-		Update update = new Update();
-		update.set("status", AppConstants.BILL_PAID);
-		Bill updatedBill = mongoTemplate.findAndModify(query, update, Bill.class);
+		query.addCriteria(Criteria.where("id").is(payment.getId()));
 		
-		if(updatedBill != null)
-			return true;
-		else
-			return false;
+		Bill bill = mongoTemplate.findOne(query, Bill.class);
+		if(bill != null) {
+			bill.setAmountPaid(bill.getAmountPaid()+ payment.getAmountPaid());
+			if(bill.getAmountPaid() >= bill.getTotal()) {
+				bill.setStatus(AppConstants.BILL_PAID);
+			}
+		}
+		
+		mongoTemplate.save(bill);
+		
+		return true;
 	}
 	
 }
