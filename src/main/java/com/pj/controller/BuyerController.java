@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.pj.dao.BuyerRepository;
 import com.pj.model.Buyer;
+import com.pj.model.BuyerDTO;
+import com.pj.model.BuyerGroupDTO;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -62,6 +66,12 @@ public class BuyerController {
 	@RequestMapping(value = "/activate/{id}", method = RequestMethod.POST)
 	public boolean activate(@PathVariable String id) {
 		return buyerRepo.activate(id);
+	}
+	
+	
+	@RequestMapping(value = "/sorted", method = RequestMethod.GET)
+	public List<BuyerGroupDTO> getSortedGroupedBuyers() {
+		return buyerRepo.getSortedGroupedBuyers();
 	}
 	
 }

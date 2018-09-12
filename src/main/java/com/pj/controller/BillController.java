@@ -72,9 +72,9 @@ public class BillController {
 		return billRepo.findById(id);
 	}
 	 
-	@DeleteMapping
-	public boolean delete(@RequestBody Bill bill) {
-		billRepo.deleteById(bill.getId());
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public boolean delete(@PathVariable String id) {
+		billRepo.deleteById(id);
 		 return true;
 	}
 	

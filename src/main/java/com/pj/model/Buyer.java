@@ -115,5 +115,14 @@ public class Buyer {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	@Override
+	public String toString() {
+		return "Buyer [id=" + id + ", firstName=" + firstName + ", middleName=" + middleName + ", lastName=" + lastName
+				+ ", company=" + company + ", address=" + address + ", phone=" + phone + ", email=" + email
+				+ ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+	}
+	
+	
 	
 }
