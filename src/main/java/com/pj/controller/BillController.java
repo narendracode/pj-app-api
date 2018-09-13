@@ -31,17 +31,19 @@ public class BillController {
 	public Bill create(@RequestBody Bill bill) {
 		if(bill.getItems() != null && bill.getItems().size()>0) {
 			Iterator<Item> it = bill.getItems().iterator();
+			double subTotal = 0.0;
 			double total = 0.0;
 			while(it.hasNext()) {
 				Item item = it.next();
-				total = total + (item.getUnitCost() * item.getQuantity());
+				subTotal = subTotal + (item.getUnitCost() * item.getQuantity());
 			}
 			
-			double tax = total * bill.getTax();
-			total = total + tax;
+			double tax = subTotal * bill.getTax();
+			total = subTotal + tax;
 			
 			total = total - bill.getDiscount();
 			bill.setTotal(total);
+			bill.setSubTotal(subTotal);
 		}
 		
 		bill.setStatus(AppConstants.BILL_PENDING_PAYMENT);

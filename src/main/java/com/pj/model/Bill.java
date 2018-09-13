@@ -19,7 +19,17 @@ public class Bill {
 	private int status;
 	private double amountPaid;
 	private double total;
+	private double subTotal;
 	
+	
+	public double getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(double subTotal) {
+		this.subTotal = subTotal;
+	}
+
 	@DateTimeFormat(iso=ISO.DATE_TIME)
 	private Date createdAt;
 	
